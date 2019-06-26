@@ -298,8 +298,9 @@ void setup() {
   setup_controller();  
   position(0,0);  // set staring position
   feedrate((MAX_FEEDRATE + MIN_FEEDRATE)/2);  // set default speed
-
-  help();  // say hello
+  Serial.print(F("GcodeCNCDemo2AxisV1 "));
+  Serial.println(VERSION);
+  //help();  // say hello
   ready();
 }
 
