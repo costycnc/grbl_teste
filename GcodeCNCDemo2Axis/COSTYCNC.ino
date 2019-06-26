@@ -1,51 +1,71 @@
-#ifndef CONFIG_H
-#define CONFIG_H
 //------------------------------------------------------------------------------
 // 2 Axis CNC Demo
-// dan@marginallycelver.com 2013-08-30
+// dan@marginallycelver.com 2015-12-23
 //------------------------------------------------------------------------------
 // Copyright at end of file.
 // please see http://www.github.com/MarginallyClever/GcodeCNCDemo for more information.
+
+#if CONTROLLER == COSTYCNC
+
+//------------------------------------------------------------------------------
+// INCLUDES
+//------------------------------------------------------------------------------
 
 
 //------------------------------------------------------------------------------
 // CONSTANTS
 //------------------------------------------------------------------------------
-// supported control boards
-#define AMS1 (1)
-#define AMS2 (2)
-#define HG7881 (3) // HG7881 Stepper Driver
+#define M1_STEP 54
+#define M1_DIR  55
+#define M1_ENA  38
 
-// change this line to select a different control board for your CNC.
-#define CONTROLLER COSTYCNC    //RAMPS//AMS1
-#define MOTORDEBUG
+#define M2_STEP 60
+#define M2_DIR  61
+#define M2_ENA  56
 
+// limit switches
+#define SWITCH1 3
+#define SWITCH2 14
 
-#define VERSION        (1)  // firmware version
-#define BAUD           (9600)  // How fast is the Arduino talking?
-#define MAX_BUF        (64)  // What is the longest message Arduino can store?
-#define STEPS_PER_TURN (400)  // depends on your stepper motor.  most are 200.
-#define MIN_STEP_DELAY (50.0)
-#define MAX_FEEDRATE   (1000000.0/MIN_STEP_DELAY)
-#define MIN_FEEDRATE   (0.01)
-
-
-// for arc directions
-#define ARC_CW          (1)
-#define ARC_CCW         (-1)
-// Arcs are split into many line segments.  How long are the segments?
-#define MM_PER_SEGMENT  (10)
-
-
+//------------------------------------------------------------------------------
+// GLOBALS
+//------------------------------------------------------------------------------
+  
 //------------------------------------------------------------------------------
 // METHODS
 //------------------------------------------------------------------------------
-extern void m1step(int dir);
-extern void m2step(int dir);
-extern void disable();
-extern void setup_controller();
+
+void m1step(int dir) {
+  digitalWrite(M1_ENA,HIGH);
+  digitalWrite(M1_DIR,dir);
+  digitalWrite(M1_STEP,HIGH);
+  digitalWrite(M1_STEP,LOW);
+}
+
+void m2step(int dir) {
+  digitalWrite(M2_ENA,HIGH);
+  digitalWrite(M2_DIR,dir);
+  digitalWrite(M2_STEP,HIGH);
+  digitalWrite(M2_STEP,LOW);
+}
+
+void disable() {
+  digitalWrite(M1_ENA,LOW);
+  digitalWrite(M2_ENA,LOW);
+}
 
 
+void setup_controller() {
+  pinMode(M1_ENA,OUTPUT);
+  pinMode(M2_ENA,OUTPUT);
+  pinMode(M1_STEP,OUTPUT);
+  pinMode(M2_STEP,OUTPUT);
+  pinMode(M1_DIR,OUTPUT);
+  pinMode(M2_DIR,OUTPUT);
+}
+
+
+#endif  // CONTROLLER == RAMPS
 /**
 * This file is part of GcodeCNCDemo.
 *
@@ -62,4 +82,3 @@ extern void setup_controller();
 * You should have received a copy of the GNU General Public License
 * along with Foobar. If not, see <http://www.gnu.org/licenses/>.
 */
-#endif
