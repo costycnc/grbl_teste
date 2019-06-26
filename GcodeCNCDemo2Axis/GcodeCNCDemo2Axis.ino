@@ -21,6 +21,7 @@ long  step_delay;  // machine version
 
 // settings
 char mode_abs=1;   // absolute mode?
+bool a = false;
 
 
 //------------------------------------------------------------------------------
@@ -112,7 +113,6 @@ void line(float newx,float newy) {
 
   px = newx;
   py = newy;
-  Serial.println("ok\n");
 }
 
 
@@ -197,6 +197,7 @@ float parsenumber(char code,float val) {
 void output(const char *code,float val) {
   Serial.print(code);
   Serial.println(val);
+   
 }
 
 
@@ -230,6 +231,15 @@ void help() {
   Serial.println(F("M100; - this help message"));
   Serial.println(F("M114; - report position and feedrate"));
   Serial.println(F("All commands must end with a newline."));
+  
+}
+
+void vers() {
+  Serial.println("GcodeCNCDemo2AxisV1 1 modyfied by costycnc \n");
+  Serial.println("Original https://github.com/MarginallyClever/GcodeCNCDemo\n");
+  Serial.println("Modified https://github.com/costycnc/grbl_teste ");
+ 
+  
 }
 
 
@@ -237,6 +247,7 @@ void help() {
  * Read the input buffer and find any recognized commands.  One G or M command per line.
  */
 void processCommand() {
+   a=false;
   int cmd = parsenumber('G',-1);
   switch(cmd) {
   case  0:
@@ -263,7 +274,7 @@ void processCommand() {
     position( parsenumber('X',0),
               parsenumber('Y',0) );
     break;
-  default:  break;
+  default:Serial.println("passed break\n");  break;
   }
 
   cmd = parsenumber('M',-1);
@@ -273,8 +284,8 @@ void processCommand() {
     break;
    
   case 100:  help();  break;
-  case 114:  where();  break;
-  default: break;
+  case 114:  where(); break;
+  default:Serial.println("passed break\n");break;
   }
 
 }
@@ -298,8 +309,7 @@ void setup() {
   setup_controller();  
   position(0,0);  // set staring position
   feedrate((MAX_FEEDRATE + MIN_FEEDRATE)/2);  // set default speed
-  Serial.print(F("GcodeCNCDemo2AxisV1 "));
-  Serial.println(VERSION);
+  vers();
   //help();  // say hello
   ready();
 }
@@ -317,8 +327,10 @@ void loop() {
     if((c=='\n') || (c == '\r')) {
       // entire message received
       buffer[sofar]=0;  // end the buffer so string functions work right
-      Serial.print(F("\r\n"));  // echo a return character for humans
+     
       processCommand();  // do something with the command
+       if(a==true) Serial.println("Uknown command. Type M100 for help");
+      Serial.print(F("ok\r\n"));  // echo a return character for humans
       ready();
     }
   }
