@@ -274,7 +274,7 @@ void processCommand() {
     position( parsenumber('X',0),
               parsenumber('Y',0) );
     break;
-  default:Serial.println("passed break\n");  break;
+  default: break;
   }
 
   cmd = parsenumber('M',-1);
@@ -285,7 +285,7 @@ void processCommand() {
    
   case 100:  help();  break;
   case 114:  where(); break;
-  default:Serial.println("passed break\n");break;
+  default: break;
   }
 
 }
