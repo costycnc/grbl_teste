@@ -1,0 +1,62 @@
+<html>
+<head>
+<script>
+//let socket = new WebSocket("ws://192.168.1.11:81");
+//https://www.tutorialspoint.com/html5/html5_websocket.htm
+
+             if ("WebSocket" in window) {
+               
+
+ var socket = new WebSocket("ws://192.168.1.11:81");
+
+socket.onopen = function(e) {
+  alert("[open] Connection established, send -> server");
+  socket.send("My name is John");
+};
+
+socket.onmessage = function(event) {
+  alert(`[message] Data received: ${event.data} <- server`);
+};
+
+socket.onclose = function(event) {
+ /* if (event.wasClean) {
+    alert(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+  } else {
+    // e.g. server process killed or network down
+    // event.code is usually 1006 in this case
+    alert('[close] Connection died');
+  }
+*/
+  // websocket is closed.
+                  alert("Connection is closed..."); 
+};
+
+socket.onerror = function(error) {
+  alert(`[error] ${error.message}`);
+}
+}else{
+
+               // The browser doesn't support WebSocket
+               alert("WebSocket NOT supported by your Browser!");
+}
+
+
+function sendRGB() { 
+        var r = document.getElementById('r').value; 
+           
+        var rgb = '#'+r;    
+        console.log('RGB: ' + rgb);
+        socket.send(rgb);
+                }
+function sendbtn() { 
+        console.log('costy');
+        socket.send("costy");
+                }
+</script>
+</head>
+<body>
+
+R: <input id="r" type="range" min="0" max="255" step="1" oninput="sendRGB();" ><br/>
+<button id="but" onclick="sendbtn();"><br/>
+</body>
+</html>
