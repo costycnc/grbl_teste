@@ -2,6 +2,13 @@ https://github.com/natevw/js-cnc
 
 # grbl_teste
 
+grbl is inspired from this Arduino GCode Interpreter by Mike Ellery https://github.com/alx/reprap-arduino-firmware/tree/master/GCode_Interpreter
+
+first grbl 2009 https://github.com/grbl/grbl/tree/9df29ad3b3fb769317d9c5560c54e89c92a71680
+
+grbl tat i use in my cnc grbl 0.8c
+
+
 GcodeCNCDemo2Axis original not workimg https://github.com/MarginallyClever/GcodeCNCDemo
 I adjust some errors and now working but only same as G1 X10 working --- G90,G91,G21 is blocking
 
